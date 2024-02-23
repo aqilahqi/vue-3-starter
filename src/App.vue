@@ -1,14 +1,20 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { apiGetMessage } from '@/api/example.js'
+import { apiEndpoints } from '@/api/example.js'
+import { useFeatureStore } from './store/feature-store'
+import { storeToRefs } from 'pinia'
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 
 const message = ref(null)
 
-const getMessage = async () => {
+const { getMessage } = apiEndpoints()
+
+const { features } = storeToRefs(useFeatureStore())
+
+const getTheMessage = async () => {
   try {
-    const response = await apiGetMessage()
+    const response = await getMessage()
     const data = await response.json()
     message.value = data.message
   } catch (error) {
@@ -16,14 +22,24 @@ const getMessage = async () => {
   }
 }
 
-onMounted(async () => await getMessage())
+const getFeatures = async() => {
+  try {
+    const response = await fetch('http://localhost:5173/features')
+    const data = await response.json()
+    features.value = [...data.features]
+  }catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted(async () => await getTheMessage().then(() => getFeatures()))
 </script>
 
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
+    <div class="wrapper" v-if="message">
       <HelloWorld :msg="message" />
     </div>
   </header>
