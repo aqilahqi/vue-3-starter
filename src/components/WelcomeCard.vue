@@ -1,3 +1,12 @@
+<template>
+	<div class="greetings">
+		<h1 class="green">{{ title }}</h1>
+		<h3 v-if="body">
+			{{ body }}
+		</h3>
+	</div>
+</template>
+
 <script setup>
 	defineProps({
 		title: {
@@ -11,15 +20,6 @@
 		},
 	})
 </script>
-
-<template>
-	<div class="greetings">
-		<h1 class="green">{{ title }}</h1>
-		<h3>
-			{{ body }}
-		</h3>
-	</div>
-</template>
 
 <style scoped>
 h1 {

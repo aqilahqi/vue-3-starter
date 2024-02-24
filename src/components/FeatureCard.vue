@@ -7,7 +7,7 @@
 		</i>
 		<div class="details">
 			<h3>{{ title }}</h3>
-			<div v-html="body" /> 
+			<p v-html="body" /> 
 		</div>
 	</div>
 </template>
