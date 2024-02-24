@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 export const handlers = [
   http.get('https://api.example.com/message', () => {
-    return HttpResponse.json({ message: 'Hello EKCO!', tip: "I've completed the test!" })
+    return HttpResponse.json({ title: 'Hello EKCO!', body: "I've completed the test!" })
   }),
   http.get('http://localhost:5173/features', () => {
     return HttpResponse.json({

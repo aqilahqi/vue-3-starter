@@ -3,7 +3,7 @@
 	import { apiEndpoints } from '@/api/example.js'
 	import { useFeatureStore } from './store/feature-store'
 	import { storeToRefs } from 'pinia'
-	import HelloWorld from './components/HelloWorld.vue'
+	import WelcomeCard from './components/WelcomeCard.vue'
 	import FeatureCard from './components/FeatureCard.vue'
 
 	const message = ref(null)
@@ -38,7 +38,7 @@
 
 <template>
 	<header>
-		<img alt="Vue logo"
+		<img alt="Ekco logo"
 			class="logo"
 			src="./assets/ekco-logo.png"
 			width="auto"
@@ -47,13 +47,14 @@
 		<div v-if="message"
 			class="wrapper"
 		>
-			<HelloWorld :msg="message" />
+			<WelcomeCard v-bind="message" />
 		</div>
 	</header>
 
 	<main>
 		<FeatureCard v-for="feature in features"
 			:key="feature.id"
+			primary
 			v-bind="feature"
 		/>
 	</main>
