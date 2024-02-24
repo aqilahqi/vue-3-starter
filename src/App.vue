@@ -1,52 +1,62 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { apiEndpoints } from '@/api/example.js'
-import { useFeatureStore } from './store/feature-store'
-import { storeToRefs } from 'pinia'
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+	import { ref, onMounted } from 'vue'
+	import { apiEndpoints } from '@/api/example.js'
+	import { useFeatureStore } from './store/feature-store'
+	import { storeToRefs } from 'pinia'
+	import HelloWorld from './components/HelloWorld.vue'
+	import FeatureCard from './components/FeatureCard.vue'
 
-const message = ref(null)
+	const message = ref(null)
 
-const { getMessage } = apiEndpoints()
+	const { getMessage, getFeatures } = apiEndpoints()
 
-const { features } = storeToRefs(useFeatureStore())
+	const { features } = storeToRefs(useFeatureStore())
 
-const getTheMessage = async () => {
-  try {
-    const response = await getMessage()
-    const data = await response.json()
-    message.value = data.message
-  } catch (error) {
-    console.log(error)
-  }
-}
+	const getTheMessage = async () => {
+		try {
+			const response = await getMessage()
+			const data = await response.json()
+			message.value = data
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
-const getFeatures = async() => {
-  try {
-    const response = await fetch('http://localhost:5173/features')
-    const data = await response.json()
-    features.value = [...data.features]
-  }catch (error) {
-    console.log(error)
-  }
-}
+	const getTheFeatures = async() => {
+		try {
+			const response = await getFeatures()
+			const data = await response.json()
+			features.value = [...data.features]
+		}catch (error) {
+			console.log(error)
+		}
+	}
 
-onMounted(async () => await getTheMessage().then(() => getFeatures()))
+	onMounted(async () => await getTheMessage().then(() => getTheFeatures()))
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+	<header>
+		<img alt="Vue logo"
+			class="logo"
+			src="./assets/ekco-logo.png"
+			width="auto"
+		>
 
-    <div class="wrapper" v-if="message">
-      <HelloWorld :msg="message" />
-    </div>
-  </header>
+		<div v-if="message"
+			class="wrapper"
+		>
+			<HelloWorld :msg="message" />
+		</div>
+	</header>
 
-  <main>
-    <TheWelcome />
-  </main>
+	<main>
+		<FeatureCard v-for="feature in features"
+			:key="feature.id"
+			v-bind="feature"
+		/>
+	</main>
 </template>
 
 <style scoped>
@@ -57,6 +67,7 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+  max-width: 200px;
 }
 
 @media (min-width: 1024px) {

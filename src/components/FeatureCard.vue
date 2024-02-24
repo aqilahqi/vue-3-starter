@@ -1,46 +1,50 @@
 <template>
-    <div class="item">
-        <i><component :is="icons[`${title}Icon`]" class="tab"></component></i>
-        <div class="details">
-            <h3>{{ title }}</h3>
-            <div :v-html="body" /> 
-        </div>
-    </div>
+	<div class="item">
+		<i>
+			<component :is="icons[`${icon}Icon`]"
+				class="tab"
+			/>
+		</i>
+		<div class="details">
+			<h3>{{ title }}</h3>
+			<div v-html="body" /> 
+		</div>
+	</div>
 </template>
 
 <script setup>
-import DocumentationIcon from './icons/IconDocumentation.vue'
-import ToolingIcon from './icons/IconTooling.vue'
-import EcosystemIcon from './icons/IconEcosystem.vue'
-import CommunityIcon from './icons/IconCommunity.vue'
-import SupportIcon from './icons/IconSupport.vue'
+	import DocumentationIcon from './icons/IconDocumentation.vue'
+	import ToolingIcon from './icons/IconTooling.vue'
+	import EcosystemIcon from './icons/IconEcosystem.vue'
+	import CommunityIcon from './icons/IconCommunity.vue'
+	import SupportIcon from './icons/IconSupport.vue'
 
-const icons = {
-    DocumentationIcon,
-    ToolingIcon,
-    EcosystemIcon,
-    CommunityIcon,
-    SupportIcon
-}
+	const icons = {
+		DocumentationIcon,
+		ToolingIcon,
+		EcosystemIcon,
+		CommunityIcon,
+		SupportIcon
+	}
 
-defineProps({
-    id: {
-        type: Number,
-        required: true
-    },
-    icon:{
-        type: String,
-        required: true
-    },
-    title:{
-        type: String,
-        required: true
-    },
-    body:{
-        type: String,
-        required: true
-    },
-})
+	defineProps({
+		id: {
+			type: Number,
+			required: true
+		},
+		title:{
+			type: String,
+			required: true
+		},
+		icon:{
+			type: String,
+			required: true
+		},
+		body:{
+			type: String,
+			required: true
+		},
+	})
 </script>
 
 <style scoped>
