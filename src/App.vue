@@ -1,20 +1,21 @@
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import { apiEndpoints } from '@/api/example.js'
-	import { useFeatureStore } from './store/feature-store'
+	import { welcomeMessages } from '@/api/welcome-messages.js'
+	import { useFeatureStore } from '@/store/feature-store'
 	import { storeToRefs } from 'pinia'
-	import WelcomeCard from './components/WelcomeCard.vue'
-	import FeatureCard from './components/FeatureCard.vue'
+	import WelcomeCard from '@/components/WelcomeCard.vue'
+	import FeatureCard from '@/components/FeatureCard.vue'
 
 	const message = ref(null)
 
-	const { getMessage, getFeatures } = apiEndpoints()
+	const { mainMessage } = welcomeMessages()
 
-	const { features } = storeToRefs(useFeatureStore())
+	const store = useFeatureStore()
+	const { features } = storeToRefs(store)
 
-	const getTheMessage = async () => {
+	const getMessage = async () => {
 		try {
-			const response = await getMessage()
+			const response = await mainMessage()
 			const data = await response.json()
 			message.value = data
 		} catch (error) {
@@ -22,17 +23,7 @@
 		}
 	}
 
-	const getTheFeatures = async() => {
-		try {
-			const response = await getFeatures()
-			const data = await response.json()
-			features.value = [...data.features]
-		}catch (error) {
-			console.log(error)
-		}
-	}
-
-	onMounted(async () => await getTheMessage().then(() => getTheFeatures()))
+	onMounted(async () => await getMessage().then(() => store.getAllFeatures()))
 
 </script>
 
